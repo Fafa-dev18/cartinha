@@ -1,7 +1,6 @@
 name: Verificar projeto
 
 on:
-  push:
   pull_request:
 
 permissions:
@@ -13,11 +12,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+    defaults:
+      run:
+        working-directory: um-presente-para-voce
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version-file: .nvmrc
+          node-version-file: um-presente-para-voce/.nvmrc
       - run: corepack enable
       - run: yarn install --frozen-lockfile
       - run: yarn validate

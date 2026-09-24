@@ -46,18 +46,28 @@ O site não precisa de banco de dados, variáveis de ambiente ou servidor Node.j
 
 ## Subir no GitHub
 
-Use esta pasta como raiz do repositório: `package.json`, `src/` e `.github/` devem ficar diretamente nela. Se houver duas pastas com o mesmo nome, abra a interna.
+O repositório atual tem o aplicativo na subpasta `um-presente-para-voce/`. Abra essa subpasta no VS Code para rodar os comandos Yarn. Os workflows ficam em `.github/workflows/` na raiz do repositório, uma pasta acima do aplicativo.
 
-O `.gitignore` exclui dependências, builds, logs, arquivos locais do editor e segredos. Inclua `yarn.lock`, `.nvmrc`, `.gitignore` e `.github/` no envio.
+O `.gitignore` exclui dependências, builds, logs, arquivos locais do editor e segredos. Inclua `yarn.lock`, `.nvmrc`, `.gitignore` e os workflows da raiz no envio.
 
-Se a pasta ainda não estiver em um repositório:
+Para enviar as alterações ao repositório existente, execute a partir da pasta do aplicativo:
 
 ```sh
-git init -b main
+cd ..
 git add .
-git commit -m "Adiciona presente e cartinha"
-git remote add origin https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
-git push -u main
+git commit -m "Configura publicação no GitHub Pages"
+git push origin main
 ```
 
-Se já houver um repositório, use o existente. O GitHub Actions verifica o projeto no Windows e no Linux a cada push ou pull request. Enviar o código ao GitHub não publica o site automaticamente.
+## Publicar no GitHub Pages
+
+1. No repositório do GitHub, abra **Settings → Pages**.
+2. Em **Build and deployment → Source**, selecione **GitHub Actions**.
+3. Envie as alterações para `main`, incluindo `.github/workflows/deploy.yml` na raiz do repositório.
+4. Na aba **Actions**, aguarde o workflow **Publicar site** concluir. Também é possível iniciá-lo em **Run workflow**.
+
+O workflow instala as dependências, verifica o código, compila e publica o conteúdo de `um-presente-para-voce/dist`. Não envie a pasta `dist` manualmente e não use **Deploy from a branch** com o código-fonte: o Pages precisa dos arquivos compilados.
+
+Endereço do site: **https://fafa-dev18.github.io/um-presente-para-voce/**. Use o endereço completo, incluindo o nome do repositório e a barra final.
+
+O workflow de pull requests verifica o projeto no Windows e no Linux. Se reorganizar o aplicativo para a raiz do repositório, ajuste `working-directory`, `node-version-file` e o caminho do artefato nos workflows.
