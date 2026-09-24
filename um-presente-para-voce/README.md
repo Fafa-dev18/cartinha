@@ -1,35 +1,63 @@
 # Um presente para você
 
-Uma surpresa em forma de site: um presente para abrir, uma cartinha e uma pergunta especial. Feito com React, TypeScript e Vinext, com estilos e animações em CSS.
+Um presente para abrir, uma cartinha e uma mensagem de carinho ao fechá-la. Feito com React, TypeScript e CSS, usando Vite.
 
-## Rodar localmente
+## Rodar no VS Code
 
-Use Node.js 22.13 ou superior. Na pasta do projeto:
+Use Node.js 24 LTS. Abra no VS Code a pasta que contém este `package.json`.
+
+Na primeira vez, habilite o Yarn e instale as dependências:
 
 ```sh
-npx --yes pnpm@11.25.0 install --frozen-lockfile
-npx --yes pnpm@11.25.0 dev
+corepack enable
+yarn install
 ```
 
-Abra http://localhost:5173. Para encerrar, use Ctrl+C no terminal.
+Para testar:
+
+```sh
+yarn dev
+```
+
+Abra o endereço mostrado no terminal (normalmente **http://127.0.0.1:5173/**). As alterações aparecem automaticamente. Para encerrar, pressione `Ctrl+C`.
+
+O projeto usa Yarn 1.22.22, definido em `package.json`. Mantenha o `yarn.lock` no repositório para instalações consistentes.
 
 ## Personalizar
 
-- `app/page.tsx`: mensagens, telas e interações. `LETTER` guarda os parágrafos da cartinha.
-- `app/globals.css`: cores, espaçamento e animações.
-- `app/layout.tsx`: título, descrição e idioma.
-- `public/`: ícone e outros arquivos públicos.
+- `src/App.tsx`: telas, mensagens e interações. O texto da carta fica em `LETTER`.
+- `src/styles.css`: cores, espaçamentos e animações.
+- `index.html`: título, descrição e idioma.
+- `public/favicon.svg`: ícone do site.
 
-O botão “Não” foge cinco vezes com o mouse e depois volta ao lugar. No toque, pelo teclado ou com redução de movimento ativada, aceita a resposta diretamente. As respostas só mudam a tela: não são armazenadas nem enviadas.
+O fluxo é presente → cartinha → mensagem de carinho. Ao fechar a cartinha, aparece: “Obrigado por ser você. Você é muito importante pra mim. Eu adoro você. Beijo.” O cabeçalho permite recomeçar. Nenhuma resposta é coletada.
 
 ## Verificar e compilar
 
 ```sh
-pnpm lint
-pnpm typecheck
-pnpm build
+yarn validate
+yarn build
+yarn preview
 ```
 
-`pnpm start` abre a versão compilada localmente. A compilação usa Vite/Vinext e gera um Worker compatível com Cloudflare em `dist/`. As pastas `build/`, `scripts/` e a configuração de hospedagem fazem parte desse processo.
+`validate` executa ESLint e TypeScript. `build` gera o site estático em `dist/`. `preview` serve esse build localmente, normalmente em **http://127.0.0.1:4173/**.
 
-Os componentes de terceiros mantêm suas licenças originais. Alterações locais não são publicadas automaticamente.
+O site não precisa de banco de dados, variáveis de ambiente ou servidor Node.js em produção. Para publicar, use o conteúdo de `dist/` em uma hospedagem estática. Os caminhos relativos permitem hospedar em uma subpasta.
+
+## Subir no GitHub
+
+Use esta pasta como raiz do repositório: `package.json`, `src/` e `.github/` devem ficar diretamente nela. Se houver duas pastas com o mesmo nome, abra a interna.
+
+O `.gitignore` exclui dependências, builds, logs, arquivos locais do editor e segredos. Inclua `yarn.lock`, `.nvmrc`, `.gitignore` e `.github/` no envio.
+
+Se a pasta ainda não estiver em um repositório:
+
+```sh
+git init -b main
+git add .
+git commit -m "Adiciona presente e cartinha"
+git remote add origin https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
+git push -u main
+```
+
+Se já houver um repositório, use o existente. O GitHub Actions verifica o projeto no Windows e no Linux a cada push ou pull request. Enviar o código ao GitHub não publica o site automaticamente.
